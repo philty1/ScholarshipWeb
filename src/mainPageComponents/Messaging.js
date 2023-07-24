@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { firebase, auth, firestore } from '../firebase/firebase';
+import { collection, query, orderBy, onSnapshot, addDoc } from 'firebase/firestore';
+
+
 
 const MessagingContainer = styled.div`
   display: flex;
@@ -24,10 +28,6 @@ const MessageItem = styled.li`
   margin-bottom: 16px;
   cursor: pointer;
   background-color: ${({ active }) => (active ? '#f6f6f6' : 'inherit')};
-
-  &:hover {
-    background-color: #f6f6f6;
-  }
 `;
 
 const SenderAvatar = styled.img`
@@ -79,28 +79,79 @@ const Conversation = styled.div`
   min-height: 200px;
 `;
 
+const MessageInputContainer = styled.div`
+  margin-top: 16px;
+`;
+
+const MessageInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  font-size: 14px;
+`;
+
+const MessageButton = styled.button`
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 const Messaging = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [messageInput, setMessageInput] = useState('');
+  const [conversations, setConversations] = useState([]);
+  const [conversation, setConversation] = useState([]); // Added missing state declaration
+  const messagesCollectionRef = collection(firestore, 'messages');
+  const messagesRef = query(messagesCollectionRef, orderBy('timestamp', 'desc'));
+  
 
-  const conversations = [
-    {
-      id: 1,
-      avatar: 'https://example.com/avatar1.jpg',
-      senderName: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-      conversation: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac fermentum urna. Nulla fringilla, quam id euismod interdum.',
-    },
-    {
-      id: 2,
-      avatar: 'https://example.com/avatar2.jpg',
-      senderName: 'Jane Smith',
-      lastMessage: 'Looking forward to our meeting!',
-      conversation: 'Ut fringilla, dolor sed efficitur lobortis, ex est mattis nisl, ac tincidunt ligula tortor id sapien. Quisque vitae rutrum neque.',
-    },
-  ];
+  useEffect(() => {
+    const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
+      const updatedConversations = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          avatar: data.avatar,
+          senderName: data.senderName,
+          latestMessage: data.latestMessage,
+        };
+      });
+      setConversations(updatedConversations);
+    });
+
+    return () => unsubscribe();
+  }, [messagesRef]);
 
   const handleSelectMessage = (messageId) => {
     setSelectedMessage(messageId);
+    const selectedMessageRef = messagesRef.doc(messageId.toString());
+    selectedMessageRef.get().then((doc) => {
+      if (doc.exists) {
+        const selectedConversation = doc.data().conversation;
+        setConversation(selectedConversation);
+      }
+    });
+  };
+
+  const handleSendMessage = () => {
+    if (messageInput.trim() !== '') {
+      const newMessage = {
+        content: messageInput,
+        senderId: auth.currentUser.uid,
+        senderName: auth.currentUser.displayName,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      };
+  
+      addDoc(messagesCollectionRef, newMessage).then(() => {
+        setMessageInput('');
+      });
+    }
   };
 
   return (
@@ -115,7 +166,10 @@ const Messaging = () => {
               onClick={() => handleSelectMessage(conversation.id)}
             >
               <SenderAvatar src={conversation.avatar} alt={conversation.senderName} />
-              <SenderName>{conversation.senderName}</SenderName>
+              <div>
+                <SenderName>{conversation.senderName}</SenderName>
+                <span>{conversation.latestMessage}</span>
+              </div>
             </MessageItem>
           ))}
         </MessageList>
@@ -124,10 +178,28 @@ const Messaging = () => {
         {selectedMessage ? (
           <>
             <ConversationHeader>
-              <SenderAvatarLarge src={conversations[selectedMessage - 1].avatar} alt={conversations[selectedMessage - 1].senderName} />
-              <SenderNameLarge>{conversations[selectedMessage - 1].senderName}</SenderNameLarge>
+              <SenderAvatarLarge
+                src={conversations[selectedMessage - 1].avatar}
+                alt={conversations[selectedMessage - 1].senderName}
+              />
+              <SenderNameLarge>
+                {conversations[selectedMessage - 1].senderName}
+              </SenderNameLarge>
             </ConversationHeader>
-            <Conversation>{conversations[selectedMessage - 1].conversation}</Conversation>
+            <Conversation>
+              {conversation.map((message, index) => (
+                <div key={index}>{message.content}</div>
+              ))}
+            </Conversation>
+            <MessageInputContainer>
+              <MessageInput
+                type="text"
+                placeholder="Type a message..."
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+              />
+              <MessageButton onClick={handleSendMessage}>Send</MessageButton>
+            </MessageInputContainer>
           </>
         ) : (
           <p>Select a message to view the conversation</p>

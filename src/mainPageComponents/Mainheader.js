@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBell } from '@fortawesome/free-solid-svg-icons';
@@ -14,9 +14,16 @@ const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   right: 0;
+  height: 35px;
   z-index: 999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
+  color: #808080;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    height: 30px;
+  }
 `;
 
 const LogoImage = styled.img`
@@ -30,48 +37,86 @@ const LogoImage = styled.img`
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
+  margin: auto; /* Center the content horizontally */
+
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 2px;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 200px;
   padding: 8px;
   border: none;
-  border-radius: 4px;
-  background-color: #f2f2f2;
-  margin-left: 10px;
+  background-color: transparent;
   color: #333333;
   font-size: 14px;
-  backdrop-filter: blur(5px);
-  transition: background-color 0.3s ease-in-out;
-
-  @media (max-width: 768px) {
-    width: 150px;
-  }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    padding: 6px;
   }
 `;
 
 const Icon = styled(FontAwesomeIcon)`
-  font-size: 24px;
+  font-size: 19px;
   color: #333333;
   margin-left: 10px;
   cursor: pointer;
 
+  &:hover {
+    color: #ff0000;
+    transition: color 0.3s ease-in-out;
+  }
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const NotificationDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 999;
+
   @media (max-width: 768px) {
-    font-size: 20px;
+    width: 150px;
+  }
+`;
+
+const NotificationItem = styled.div`
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f2f2f2;
+    transition: background-color 0.3s ease-in-out;
   }
 `;
 
 const MainHeader = () => {
-  const handleNotificationClick = () => {
-    // Implement your notification click functionality here
-    console.log('Notification clicked!');
-  };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const handleNotificationClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <HeaderContainer>
@@ -79,11 +124,19 @@ const MainHeader = () => {
       <SearchContainer>
         <SearchInput type="text" placeholder="Search" />
         <Icon icon={faSearch} />
-        <Icon icon={faBell} onClick={handleNotificationClick} />
       </SearchContainer>
+      <RightSection>
+        <Icon icon={faBell} onClick={handleNotificationClick} />
+        {isDropdownOpen && (
+          <NotificationDropdown>
+            <NotificationItem>Notification 1</NotificationItem>
+            <NotificationItem>Notification 2</NotificationItem>
+            <NotificationItem>Notification 3</NotificationItem>
+          </NotificationDropdown>
+        )}
+      </RightSection>
     </HeaderContainer>
   );
 };
 
 export default MainHeader;
-

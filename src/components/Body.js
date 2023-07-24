@@ -7,6 +7,7 @@ const BodyContainer = styled.div`
   margin: 0 auto;
   padding: 40px;
   background-color: #F4F7FD;
+  margin-top: 70px;
   color: #333333;
   display: flex;
   flex-direction: column;
@@ -52,24 +53,24 @@ const fadeInRightAnimation = keyframes`
 `;
 
 const Heading = styled.h1`
-  font-size: 48px;
+  font-size: 45px;
   margin-bottom: 10px;
   color: #333333;
   animation: ${fadeInUpAnimation} 1s ease-in;
 
   @media (max-width: 768px) {
-    font-size: 36px;
+    font-size: 33px;
   }
 `;
 
 const Subheading = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 40px;
   color: #777777;
   animation: ${fadeInUpAnimation} 1s ease-in;
 
   @media (max-width: 768px) {
-    font-size: 18px;
+    font-size: 15px;
     margin-bottom: 20px;
   }
 `;
@@ -110,65 +111,65 @@ const FeatureIcon = styled.video`
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 10px;
   color: #333333;
   animation: ${fadeInRightAnimation} 1s ease-in;
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
 const FeatureDescription = styled.p`
-  font-size: 16px;
+  font-size: 13px;
   text-align: center;
   color: #777777;
   animation: ${fadeInUpAnimation} 1s ease-in;
 
   @media (max-width: 768px) {
-    font-size: 14px;
+    font-size: 11px;
   }
 `;
 
 const Body = () => {
   return (
     <BodyContainer>
-      <Heading>Welcome to FundmyFuture</Heading>
-      <Subheading>Connect with professionals and explore career opportunities.</Subheading>
-      <FeaturesContainer>
-        <Feature>
-          <FeatureIcon autoPlay loop muted>
-            <source src={featureIcon1} type="video/mp4" />
-            Your browser does not support the video tag.
-          </FeatureIcon>
-          <FeatureTitle>Build Your Network</FeatureTitle>
-          <FeatureDescription>
-            Connect with professionals, colleagues, and industry experts to expand your network.
-          </FeatureDescription>
-        </Feature>
-        <Feature>
-          <FeatureIcon autoPlay loop muted>
-            <source src={featureIcon1} type="video/mp4" />
-            Your browser does not support the video tag.
-          </FeatureIcon>
-          <FeatureTitle>Discover Job Opportunities</FeatureTitle>
-          <FeatureDescription>
-            Explore a wide range of job listings and discover new career opportunities.
-          </FeatureDescription>
-        </Feature>
-        <Feature>
-          <FeatureIcon autoPlay loop muted>
-            <source src={featureIcon1} type="video/mp4" />
-            Your browser does not support the video tag.
-          </FeatureIcon>
-          <FeatureTitle>Stay Informed</FeatureTitle>
-          <FeatureDescription>
-            Get updates on industry trends, news, and relevant insights from professionals in your field.
-          </FeatureDescription>
-        </Feature>
-      </FeaturesContainer>
-    </BodyContainer>
+<Heading>Welcome to FundmyFuture</Heading>
+<Subheading>Explore a wide range of scholarship opportunities and connect with organizations, institutions, and donors who can help support your educational journey.</Subheading>
+<FeaturesContainer>
+<Feature>
+<FeatureIcon autoPlay loop muted>
+<source src={featureIcon1} type="video/mp4" />
+Your browser does not support the video tag.
+</FeatureIcon>
+<FeatureTitle>Get Scholarship Assistance</FeatureTitle>
+<FeatureDescription>
+Connect with other university students and receive support with your tuition through our scholarship social media app.
+</FeatureDescription>
+</Feature>
+<Feature>
+<FeatureIcon autoPlay loop muted>
+<source src={featureIcon1} type="video/mp4" />
+Your browser does not support the video tag.
+</FeatureIcon>
+<FeatureTitle>Interact with other Users</FeatureTitle>
+<FeatureDescription>
+Engage and interact with fellow students on our platform, where you can seek advice, share experiences, and form connections to enhance your educational journey.
+</FeatureDescription>
+</Feature>
+<Feature>
+<FeatureIcon autoPlay loop muted>
+<source src={featureIcon1} type="video/mp4" />
+Your browser does not support the video tag.
+</FeatureIcon>
+<FeatureTitle>Donate to Empower Students</FeatureTitle>
+<FeatureDescription>
+Contribute to the Fund my Future Foundation by donating to help students with their tuition expenses. Make a difference in their lives and enable them to pursue their education.
+</FeatureDescription>
+</Feature>
+</FeaturesContainer>
+</BodyContainer>
   );
 };
 

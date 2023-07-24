@@ -1,38 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import Post from './Post';
-import AddPost from './AddPost';
-import Donate from './Donate';
+import Feed from './feed';
+import Donatefeed from './Donatefeed';
 import ScholarshipList from './ScholarshipList';
 
 const HomeContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   background-color: #fff;
-  margin: 0px;
+  width: 100%;
+  margin: 0;
   padding: 0;
-  margin-right: 0px; /* Add margin-right for spacing */
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const LeftContainer = styled.div`
   flex: 1;
   padding-right: 20px;
+  border-right: 1px solid #e5e5e5; /* Add a right border to the LeftContainer */
+`;
+
+const DonatefeedContainer = styled.div`
+  margin-bottom: 20px; /* Add space at the bottom */
 `;
 
 const RightContainer = styled.div`
   width: 272px;
   background-color: #ffff;
   padding: 0;
+
+
+  @media (max-width: 950px) {
+    display: none;
+  }
 `;
 
 const Homepage = () => {
   return (
     <HomeContainer>
       <LeftContainer>
-        <Donate />
-        <AddPost />
-        <Post />
+        <DonatefeedContainer>
+          <Donatefeed />
+        </DonatefeedContainer>
+        <Feed />
       </LeftContainer>
       <RightContainer>
         <ScholarshipList />

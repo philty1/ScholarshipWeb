@@ -1,22 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../images/logo.png';
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDKaSnAjZeQkN3lG7RcBT71L--w6AmeJSo",
-  authDomain: "scholarship-8e353.firebaseapp.com",
-  projectId: "scholarship-8e353",
-  storageBucket: "scholarship-8e353.appspot.com",
-  messagingSenderId: "338237058435",
-  appId: "1:338237058435:web:d5ea802cb1792feb25dab6"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+import { signIn, register } from '../api/auth';
 
 const HeaderContainer = styled.header`
   background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
@@ -85,15 +71,6 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
-const Icon = styled(FontAwesomeIcon)`
-  font-size: 24px;
-  color: #333333;
-  margin-right: 8px;
-
-  @media (max-width: 768px) {
-    font-size: 20px;
-  }
-`;
 
 const LogoImage = styled.img`
   width: 50px;
@@ -213,13 +190,24 @@ const Header = () => {
     e.preventDefault();
     setError(null);
 
-    signInWithEmailAndPassword(auth, email, password)
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
+    signIn(email, password)
       .then(() => {
         console.log('User signed in successfully');
         navigate('/Mainpage');
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.code === 'auth/user-not-found') {
+          setError('Invalid email or password.');
+        } else if (error.code === 'auth/wrong-password') {
+          setError('Invalid email or password.');
+        } else {
+          setError('An error occurred. Please try again later.');
+        }
       });
   };
 
@@ -227,14 +215,35 @@ const Header = () => {
     e.preventDefault();
     setError(null);
 
-    createUserWithEmailAndPassword(auth, email, password)
+    if (!email || !password || !firstName || !lastName || !company) {
+      setError('Please fill in all the fields.');
+      return;
+    }
+  
+    // Validate password length
+    if (password.length < 6) {
+      setError('Password should be at least 6 characters long.');
+      return;
+    }
+
+    register(email, password)
       .then(() => {
         console.log('User registered successfully');
+        navigate('/');
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.code === 'auth/weak-password') {
+          setError('Password should be at least 6 characters long.');
+        } else if (error.code === 'auth/email-already-in-use') {
+          setError('The email address is already in use.');
+        } else {
+          setError('An error occurred. Please try again later.');
+        }
       });
   };
+
+  
+
 
   const handleForgotPassword = () => {
     console.log('Forgot Password');
@@ -315,7 +324,7 @@ const Header = () => {
                   onChange={(e) => setCompany(e.target.value)}
                 />
                 {error && <ErrorText>{error}</ErrorText>}
-                <ModalButton type="submit">Continue</ModalButton>
+                <ModalButton type="submit">Register</ModalButton>
                 <p>
                   Already have an account?{' '}
                   <ModalSwitch onClick={handleModalSwitch}>Sign In</ModalSwitch>
@@ -330,4 +339,6 @@ const Header = () => {
 };
 
 export default Header;
+
+
 

@@ -4,7 +4,13 @@ import styled from 'styled-components';
 const BookmarkedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Heading = styled.h1`
@@ -15,7 +21,11 @@ const Heading = styled.h1`
 const BookmarkedList = styled.ul`
   list-style: none;
   padding: 0;
-  width: 600px;
+  
+
+  @media (min-width: 768px) {
+    max-width: 600px;
+  }
 `;
 
 const PostItem = styled.li`

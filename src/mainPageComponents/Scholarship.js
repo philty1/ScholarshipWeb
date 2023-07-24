@@ -6,6 +6,8 @@ const ScholarshipContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const Heading = styled.h1`
@@ -18,6 +20,7 @@ const Heading = styled.h1`
 
 const CategoryContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
 `;
@@ -36,7 +39,8 @@ const SearchContainer = styled.div`
 
 const SearchInput = styled.input`
   padding: 10px;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 5px;
 `;
@@ -50,7 +54,7 @@ const ScholarshipList = styled.div`
 const ScholarshipItem = styled.div`
   text-align: center;
   margin-bottom: 20px;
-  width: 600px;
+  max-width: 600px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;

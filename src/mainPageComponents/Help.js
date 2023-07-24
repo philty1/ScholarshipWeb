@@ -17,7 +17,8 @@ const Title = styled.h1`
 `;
 
 const FAQContainer = styled.div`
-  width: 600px;
+  
+  max-width: 600px; /* Added max-width to limit the container on larger screens */
   margin-bottom: 40px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -48,7 +49,7 @@ const FAQAnswer = styled.p`
 `;
 
 const ContactContainer = styled.div`
-  width: 600px;
+  max-width: 600px; /* Added max-width to limit the container on larger screens */
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;

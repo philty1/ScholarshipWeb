@@ -5,6 +5,7 @@ import './index.css';
 import App from './pages/App';
 import Mainpage from './pages/Mainpage';
 import Profile from './mainPageComponents/Profile';
+import Donate from './mainPageComponents/Donate'
 import Scholarship from './mainPageComponents/Scholarship';
 import Bookmarked from './mainPageComponents/Bookmarked';
 import Help from './mainPageComponents/Help';
@@ -21,6 +22,7 @@ createRoot(rootElement).render(
       <Route path="/mainpage" element={<Mainpage />}>
         <Route index element={<Homepage />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="donate" element={<Donate />} />
         <Route path="scholarship" element={<Scholarship />} />
         <Route path="bookmarked" element={<Bookmarked />} />
         <Route path="messaging" element={<Messaging />} />

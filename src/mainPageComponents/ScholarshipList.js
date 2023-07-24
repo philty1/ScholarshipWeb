@@ -95,7 +95,7 @@ const ScholarshipList = () => {
     },
   ];
 
-  const [scholarships, setScholarships] = useState(initialScholarships);
+  const [scholarships] = useState(initialScholarships);
   const [showAll, setShowAll] = useState(false);
 
   const toggleShowAll = () => {
